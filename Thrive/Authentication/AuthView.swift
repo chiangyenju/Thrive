@@ -14,23 +14,11 @@ struct AuthView: View {
                 .padding(.bottom, 20)
 
             VStack(spacing: 20) {
-                TextField("  Email", text: self.$email)
-                    .frame(height: 55)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .padding([.horizontal], 4)
-                    .cornerRadius(16)
-                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.gray))
-                    .padding([.horizontal], 24)
-                    .font(Font.custom("LexendDeca-Regular", size: 18))
+                TextField("Email", text: $email)
+                    .textFieldStyle(MyTextFieldStyle())
 
-                SecureField("  Password", text: $password)
-                    .frame(height: 55)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .padding([.horizontal], 4)
-                    .cornerRadius(16)
-                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.gray))
-                    .padding([.horizontal], 24)
-                    .font(Font.custom("LexendDeca-Regular", size: 18))
+                SecureField("Password", text: $password)
+                    .textFieldStyle(MyTextFieldStyle())
 
                 Toggle("Remember Me", isOn: $rememberMe)
                     .font(Font.custom("LexendDeca-Regular", size: 14))
@@ -77,6 +65,20 @@ struct AuthView: View {
         .foregroundColor(.primary) // Ensure primary text color for dark mode
     }
 }
+
+struct MyTextFieldStyle: TextFieldStyle {
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
+        .frame(maxWidth: 250) // Set a maximum width
+        .padding(15)
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .stroke(Color.gray, lineWidth: 2)
+        ).padding(2)
+    }
+}
+
+
 
 struct AuthView_Previews: PreviewProvider {
     static var previews: some View {
