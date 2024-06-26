@@ -1,24 +1,38 @@
-//
-//  ContentView.swift
-//  Thrive
-//
-//  Created by Yen Ju Chiang on 6/15/24.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var selectedTab: Tabs = .home
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text("Thrive")
+                .padding()
+                .font(Fonts.heading)
+            Spacer()
+            ZStack {
+                switch selectedTab {
+                case .home:
+                    HomePageView()
+                case .test:
+                    TestPageView()
+                case .results:
+                    ResultsPageView()
+                case .discover:
+                    DiscoverPageView()
+                case .profile:
+                    ProfilePageView()
+                }
+            }
+            Spacer()
+            TabBarView(selectedTab: $selectedTab)
         }
-        .padding()
+
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }

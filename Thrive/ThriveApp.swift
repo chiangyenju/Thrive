@@ -1,17 +1,18 @@
-//
-//  ThriveApp.swift
-//  Thrive
-//
-//  Created by Yen Ju Chiang on 6/15/24.
-//
-
 import SwiftUI
+import Firebase
 
 @main
 struct ThriveApp: App {
+    @StateObject private var authViewModel = AuthViewModel()
+
+    init() {
+        FirebaseApp.configure()
+    }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .environmentObject(authViewModel)
         }
     }
 }

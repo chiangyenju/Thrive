@@ -8,12 +8,32 @@
 
 /* Begin PBXBuildFile section */
 		69E637F72C1D793200657310 /* ThriveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E637F62C1D793200657310 /* ThriveApp.swift */; };
-		69E637F92C1D793200657310 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E637F82C1D793200657310 /* ContentView.swift */; };
+		69E637F92C1D793200657310 /* TestPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E637F82C1D793200657310 /* TestPageView.swift */; };
 		69E637FB2C1D793400657310 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69E637FA2C1D793400657310 /* Assets.xcassets */; };
 		69E637FF2C1D793400657310 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69E637FE2C1D793400657310 /* Preview Assets.xcassets */; };
 		69E638092C1D793400657310 /* ThriveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E638082C1D793400657310 /* ThriveTests.swift */; };
 		69E638132C1D793400657310 /* ThriveUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E638122C1D793400657310 /* ThriveUITests.swift */; };
 		69E638152C1D793400657310 /* ThriveUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E638142C1D793400657310 /* ThriveUITestsLaunchTests.swift */; };
+		69E638222C25336400657310 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E638212C25336400657310 /* ContentView.swift */; };
+		69E638242C25B0C700657310 /* ResultsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E638232C25B0C700657310 /* ResultsPageView.swift */; };
+		69E638262C25B0EC00657310 /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E638252C25B0EC00657310 /* HomePageView.swift */; };
+		69E638282C25B0FC00657310 /* DiscoverPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E638272C25B0FC00657310 /* DiscoverPageView.swift */; };
+		69E6382A2C25B10800657310 /* ProfilePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E638292C25B10800657310 /* ProfilePageView.swift */; };
+		69E6382D2C25BA9400657310 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E6382C2C25BA9400657310 /* TabBarView.swift */; };
+		69E638302C25BE0900657310 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E6382F2C25BE0900657310 /* Fonts.swift */; };
+		69E638322C2649C200657310 /* TabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E638312C2649C200657310 /* TabBarButton.swift */; };
+		69E638782C26F9FE00657310 /* TestDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E638772C26F9FE00657310 /* TestDetailView.swift */; };
+		69E6387C2C27001E00657310 /* TestCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E6387B2C27001E00657310 /* TestCardView.swift */; };
+		69E638802C27124100657310 /* FeaturedTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E6387F2C27124100657310 /* FeaturedTestView.swift */; };
+		69E638832C2B261700657310 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 69E638822C2B261700657310 /* GoogleService-Info.plist */; };
+		69E638862C2B271000657310 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 69E638852C2B271000657310 /* FirebaseAuth */; };
+		69E638882C2B271000657310 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 69E638872C2B271000657310 /* FirebaseFirestore */; };
+		69E6388A2C2B271000657310 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 69E638892C2B271000657310 /* FirebaseFirestoreSwift */; };
+		69E6388D2C2B274600657310 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E6388C2C2B274600657310 /* AuthView.swift */; };
+		69E638902C2B275900657310 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E6388F2C2B275900657310 /* AuthViewModel.swift */; };
+		69E638922C2B276500657310 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E638912C2B276500657310 /* AuthService.swift */; };
+		69E638942C2B2C6A00657310 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E638932C2B2C6A00657310 /* AppState.swift */; };
+		69E638962C2C45E000657310 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E638952C2C45E000657310 /* RootView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +56,7 @@
 /* Begin PBXFileReference section */
 		69E637F32C1D793200657310 /* Thrive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Thrive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69E637F62C1D793200657310 /* ThriveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThriveApp.swift; sourceTree = "<group>"; };
-		69E637F82C1D793200657310 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		69E637F82C1D793200657310 /* TestPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageView.swift; sourceTree = "<group>"; };
 		69E637FA2C1D793400657310 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		69E637FC2C1D793400657310 /* Thrive.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thrive.entitlements; sourceTree = "<group>"; };
 		69E637FE2C1D793400657310 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -45,6 +65,23 @@
 		69E6380E2C1D793400657310 /* ThriveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThriveUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		69E638122C1D793400657310 /* ThriveUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThriveUITests.swift; sourceTree = "<group>"; };
 		69E638142C1D793400657310 /* ThriveUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThriveUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		69E638212C25336400657310 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		69E638232C25B0C700657310 /* ResultsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsPageView.swift; sourceTree = "<group>"; };
+		69E638252C25B0EC00657310 /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
+		69E638272C25B0FC00657310 /* DiscoverPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverPageView.swift; sourceTree = "<group>"; };
+		69E638292C25B10800657310 /* ProfilePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageView.swift; sourceTree = "<group>"; };
+		69E6382C2C25BA9400657310 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
+		69E6382F2C25BE0900657310 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		69E638312C2649C200657310 /* TabBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButton.swift; sourceTree = "<group>"; };
+		69E638772C26F9FE00657310 /* TestDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDetailView.swift; sourceTree = "<group>"; };
+		69E6387B2C27001E00657310 /* TestCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCardView.swift; sourceTree = "<group>"; };
+		69E6387F2C27124100657310 /* FeaturedTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedTestView.swift; sourceTree = "<group>"; };
+		69E638822C2B261700657310 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		69E6388C2C2B274600657310 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		69E6388F2C2B275900657310 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		69E638912C2B276500657310 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		69E638932C2B2C6A00657310 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		69E638952C2C45E000657310 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +89,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69E638862C2B271000657310 /* FirebaseAuth in Frameworks */,
+				69E638882C2B271000657310 /* FirebaseFirestore in Frameworks */,
+				69E6388A2C2B271000657310 /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,10 +115,12 @@
 		69E637EA2C1D793200657310 = {
 			isa = PBXGroup;
 			children = (
+				69E638822C2B261700657310 /* GoogleService-Info.plist */,
 				69E637F52C1D793200657310 /* Thrive */,
 				69E638072C1D793400657310 /* ThriveTests */,
 				69E638112C1D793400657310 /* ThriveUITests */,
 				69E637F42C1D793200657310 /* Products */,
+				69E6383B2C26754B00657310 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,7 +138,18 @@
 			isa = PBXGroup;
 			children = (
 				69E637F62C1D793200657310 /* ThriveApp.swift */,
-				69E637F82C1D793200657310 /* ContentView.swift */,
+				69E638212C25336400657310 /* ContentView.swift */,
+				69E638952C2C45E000657310 /* RootView.swift */,
+				69E638932C2B2C6A00657310 /* AppState.swift */,
+				69E6388B2C2B273400657310 /* Authentication */,
+				69E638812C28559700657310 /* TestViews */,
+				69E6382E2C25BDF300657310 /* Helpers */,
+				69E6382B2C25B6B700657310 /* Tab Bar */,
+				69E6387F2C27124100657310 /* FeaturedTestView.swift */,
+				69E638232C25B0C700657310 /* ResultsPageView.swift */,
+				69E638252C25B0EC00657310 /* HomePageView.swift */,
+				69E638272C25B0FC00657310 /* DiscoverPageView.swift */,
+				69E638292C25B10800657310 /* ProfilePageView.swift */,
 				69E637FA2C1D793400657310 /* Assets.xcassets */,
 				69E637FC2C1D793400657310 /* Thrive.entitlements */,
 				69E637FD2C1D793400657310 /* Preview Content */,
@@ -129,6 +182,50 @@
 			path = ThriveUITests;
 			sourceTree = "<group>";
 		};
+		69E6382B2C25B6B700657310 /* Tab Bar */ = {
+			isa = PBXGroup;
+			children = (
+				69E6382C2C25BA9400657310 /* TabBarView.swift */,
+				69E638312C2649C200657310 /* TabBarButton.swift */,
+			);
+			path = "Tab Bar";
+			sourceTree = "<group>";
+		};
+		69E6382E2C25BDF300657310 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				69E6382F2C25BE0900657310 /* Fonts.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		69E6383B2C26754B00657310 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		69E638812C28559700657310 /* TestViews */ = {
+			isa = PBXGroup;
+			children = (
+				69E637F82C1D793200657310 /* TestPageView.swift */,
+				69E6387B2C27001E00657310 /* TestCardView.swift */,
+				69E638772C26F9FE00657310 /* TestDetailView.swift */,
+			);
+			path = TestViews;
+			sourceTree = "<group>";
+		};
+		69E6388B2C2B273400657310 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				69E6388C2C2B274600657310 /* AuthView.swift */,
+				69E6388F2C2B275900657310 /* AuthViewModel.swift */,
+				69E638912C2B276500657310 /* AuthService.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -145,6 +242,11 @@
 			dependencies = (
 			);
 			name = Thrive;
+			packageProductDependencies = (
+				69E638852C2B271000657310 /* FirebaseAuth */,
+				69E638872C2B271000657310 /* FirebaseFirestore */,
+				69E638892C2B271000657310 /* FirebaseFirestoreSwift */,
+			);
 			productName = Thrive;
 			productReference = 69E637F32C1D793200657310 /* Thrive.app */;
 			productType = "com.apple.product-type.application";
@@ -217,6 +319,9 @@
 				Base,
 			);
 			mainGroup = 69E637EA2C1D793200657310;
+			packageReferences = (
+				69E638842C2B271000657310 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 69E637F42C1D793200657310 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -235,6 +340,7 @@
 			files = (
 				69E637FF2C1D793400657310 /* Preview Assets.xcassets in Resources */,
 				69E637FB2C1D793400657310 /* Assets.xcassets in Resources */,
+				69E638832C2B261700657310 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,8 +365,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				69E637F92C1D793200657310 /* ContentView.swift in Sources */,
+				69E6388D2C2B274600657310 /* AuthView.swift in Sources */,
+				69E637F92C1D793200657310 /* TestPageView.swift in Sources */,
 				69E637F72C1D793200657310 /* ThriveApp.swift in Sources */,
+				69E6387C2C27001E00657310 /* TestCardView.swift in Sources */,
+				69E6382D2C25BA9400657310 /* TabBarView.swift in Sources */,
+				69E638902C2B275900657310 /* AuthViewModel.swift in Sources */,
+				69E638942C2B2C6A00657310 /* AppState.swift in Sources */,
+				69E638322C2649C200657310 /* TabBarButton.swift in Sources */,
+				69E638242C25B0C700657310 /* ResultsPageView.swift in Sources */,
+				69E638222C25336400657310 /* ContentView.swift in Sources */,
+				69E638282C25B0FC00657310 /* DiscoverPageView.swift in Sources */,
+				69E638262C25B0EC00657310 /* HomePageView.swift in Sources */,
+				69E638802C27124100657310 /* FeaturedTestView.swift in Sources */,
+				69E638302C25BE0900657310 /* Fonts.swift in Sources */,
+				69E638962C2C45E000657310 /* RootView.swift in Sources */,
+				69E6382A2C25B10800657310 /* ProfilePageView.swift in Sources */,
+				69E638782C26F9FE00657310 /* TestDetailView.swift in Sources */,
+				69E638922C2B276500657310 /* AuthService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,6 +542,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Thrive/Preview Content\"";
+				DEVELOPMENT_TEAM = 8Q6QW4M746;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -456,6 +579,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Thrive/Preview Content\"";
+				DEVELOPMENT_TEAM = 8Q6QW4M746;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -609,6 +733,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		69E638842C2B271000657310 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.28.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		69E638852C2B271000657310 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 69E638842C2B271000657310 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		69E638872C2B271000657310 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 69E638842C2B271000657310 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		69E638892C2B271000657310 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 69E638842C2B271000657310 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 69E637EB2C1D793200657310 /* Project object */;
 }
