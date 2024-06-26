@@ -7,19 +7,21 @@ struct TestPageView: View {
                 VStack(alignment: .leading, spacing: 20) { // Increased spacing between VStack elements
                     // Featured Test
                     Text("Featured")
-                        .font(.title)
+                        .font(Font.custom("LexendDeca-ExtraBold", size: 20))
                         .fontWeight(.bold)
                         .padding(.leading)
                     
                     FeaturedTestView(tests: Test.exampleTests)
                         .padding([.leading, .trailing])
                         .frame(height: 270) // Adjust height to match FeaturedTestView
+
+                    Divider() // Divider line between sections
                     
                     // Categories
                     ForEach(Category.allCategories, id: \.self) { category in
                         VStack(alignment: .leading) {
                             Text(category.name)
-                                .font(.headline)
+                                .font(Font.custom("LexendDeca-ExtraBold", size: 18))
                                 .padding(.leading)
                             
                             ScrollView(.horizontal, showsIndicators: false) {
@@ -35,6 +37,7 @@ struct TestPageView: View {
                             }
                         }
                         .padding(.bottom)
+                        Divider() // Divider line between categories
                     }
                 }
                 .padding(.vertical, 20) // Additional vertical padding for overall spacing
