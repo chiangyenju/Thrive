@@ -5,30 +5,37 @@ struct TestCardView: View {
 
     var body: some View {
         NavigationLink(destination: TestDetailView(test: test)) {
-            VStack(alignment: .leading, spacing: 8) {
-                Image(test.imageName)
+            VStack(alignment: .leading, spacing: 4) {
+                Image(test.squareImageName)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 150, height: 200)
                     .clipped()
                     .cornerRadius(10)
                     .shadow(radius: 5)
+                    .padding(.bottom, 5)
 
-                VStack(alignment: .leading, spacing: 4) { // Adjusted spacing for title and author
-                    Text(test.name)
-                        .font(Font.custom("LexendDeca-Regular", size: 14))
-                        .fontWeight(.bold)
-                        .lineLimit(1)
+                Text(test.name)
+                    .font(Font.custom("LexendDeca-Regular", size: 14))
+                    .fontWeight(.bold)
+                    .lineLimit(1)
 
-                    Text("by Author Name") // Replace with actual author name
-                        .font(Font.custom("LexendDeca-Light", size: 12))
-                        .foregroundColor(.gray)
-                        .lineLimit(1)
-                }
-                .padding(.horizontal, 8) // Horizontal padding for title and author
+                Text("by \(test.author)")
+                    .font(Font.custom("LexendDeca-Light", size: 12))
+                    .foregroundColor(.gray)
+                    .lineLimit(1)
             }
-            .padding(.horizontal, 8) // Horizontal padding for the entire card
-            .buttonStyle(PlainButtonStyle()) // Remove default button styling
+            .padding([.leading, .trailing], 8)
+            .padding(.top, 8)
+            .frame(width: 150, alignment: .leading)
         }
+        .buttonStyle(PlainButtonStyle())
+    }
+}
+
+struct TestCardView_Previews: PreviewProvider {
+    static var previews: some View {
+        TestCardView(test: Test.example)
+            .previewLayout(.sizeThatFits)
     }
 }

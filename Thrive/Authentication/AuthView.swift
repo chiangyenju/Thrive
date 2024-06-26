@@ -20,10 +20,15 @@ struct AuthView: View {
                 SecureField("Password", text: $password)
                     .textFieldStyle(MyTextFieldStyle())
 
-                Toggle("Remember Me", isOn: $rememberMe)
-                    .font(Font.custom("LexendDeca-Regular", size: 14))
-                    .padding(.horizontal, 40)
-                    .foregroundColor(.primary)
+                HStack {
+                    Toggle("Remember Me", isOn: $rememberMe)
+                        .font(Font.custom("LexendDeca-Regular", size: 16)) // Apply Lexend Deca font
+                        .foregroundColor(.blue)
+                        .padding(.horizontal, 20) // Adjust padding
+                        .frame(maxWidth: .infinity, alignment: .leading) // Ensure leading alignment
+
+                    Spacer()
+                }
 
                 Button(action: {
                     if isLoggingIn {
@@ -77,8 +82,6 @@ struct MyTextFieldStyle: TextFieldStyle {
         ).padding(2)
     }
 }
-
-
 
 struct AuthView_Previews: PreviewProvider {
     static var previews: some View {

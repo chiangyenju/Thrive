@@ -4,7 +4,7 @@ struct TestPageView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) { // Increased spacing between VStack elements
+                VStack(alignment: .leading, spacing: 20) {
                     // Featured Test
                     Text("Featured")
                         .font(Font.custom("LexendDeca-ExtraBold", size: 20))
@@ -13,34 +13,28 @@ struct TestPageView: View {
                     
                     FeaturedTestView(tests: Test.exampleTests)
                         .padding([.leading, .trailing])
-                        .frame(height: 270) // Adjust height to match FeaturedTestView
-
-                    Divider() // Divider line between sections
+                        .frame(height: 270)
                     
                     // Categories
                     ForEach(Category.allCategories, id: \.self) { category in
                         VStack(alignment: .leading) {
                             Text(category.name)
-                                .font(Font.custom("LexendDeca-ExtraBold", size: 18))
+                                .font(Font.custom("LexendDeca-ExtraBold", size: 20))
                                 .padding(.leading)
                             
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 15) {
                                     ForEach(category.tests) { test in
-                                        NavigationLink(destination: TestDetailView(test: test)) {
-                                            TestCardView(test: test)
-                                        }
-                                        .buttonStyle(PlainButtonStyle())
+                                        TestCardView(test: test)
                                     }
                                 }
                                 .padding([.leading, .trailing])
                             }
                         }
                         .padding(.bottom)
-                        Divider() // Divider line between categories
                     }
                 }
-                .padding(.vertical, 20) // Additional vertical padding for overall spacing
+                .padding(.vertical, 20)
             }
             .toolbar {
                 ToolbarItem(placement: .automatic) {
@@ -52,22 +46,6 @@ struct TestPageView: View {
     }
 }
 
-// Example Test Model
-struct Test: Identifiable, Hashable {
-    let id = UUID()
-    let name: String
-    let imageName: String
-    
-    static let example = Test(name: "16 Personality", imageName: "16personality_ft")
-    static let exampleTests: [Test] = [
-        Test(name: "16 Personality", imageName: "16personality_ft"),
-        Test(name: "Big Five", imageName: "bigfive_ft"),
-        Test(name: "Enneagram", imageName: "enneagram_ft"),
-        Test(name: "Career Leaders", imageName: "careerleaders_ft")
-    ]
-    
-}
-
 // Example Category Model
 struct Category: Hashable {
     let name: String
@@ -75,24 +53,20 @@ struct Category: Hashable {
     
     static let allCategories: [Category] = [
         Category(name: "Popular",
-                 tests: [Test(name: "16 Personality", imageName: "16personality_sq"),         Test(name: "Big Five", imageName: "bigfive_sq"),
-                         Test(name: "Enneagram", imageName: "enneagram_sq"),
-                         Test(name: "Career Leaders", imageName: "careerleaders_sq")]),
+                 tests: [Test(name: "16 Personality", bannerImageName: "16personality_ft", squareImageName: "16personality_sq", author: "Author Name"),
+                         Test(name: "Big Five", bannerImageName: "bigfive_ft", squareImageName: "bigfive_sq", author: "Author Name"),
+                         Test(name: "Enneagram", bannerImageName: "enneagram_ft", squareImageName: "enneagram_sq", author: "Author Name"),
+                         Test(name: "Career Leaders", bannerImageName: "careerleaders_ft", squareImageName: "careerleaders_sq", author: "Author Name")]),
         Category(name: "New Releases",
-                 tests: [Test(name: "16 Personality", imageName: "16personality_sq"),         Test(name: "Big Five", imageName: "bigfive_sq"),
-                         Test(name: "Enneagram", imageName: "enneagram_sq"),
-                         Test(name: "Career Leaders", imageName: "careerleaders_sq")])
+                 tests: [Test(name: "16 Personality", bannerImageName: "16personality_ft", squareImageName: "16personality_sq", author: "Author Name"),
+                         Test(name: "Big Five", bannerImageName: "bigfive_ft", squareImageName: "bigfive_sq", author: "Author Name"),
+                         Test(name: "Enneagram", bannerImageName: "enneagram_ft", squareImageName: "enneagram_sq", author: "Author Name"),
+                         Test(name: "Career Leaders", bannerImageName: "careerleaders_ft", squareImageName: "careerleaders_sq", author: "Author Name")])
     ]
 }
 
 struct TestPageView_Previews: PreviewProvider {
     static var previews: some View {
         TestPageView()
-    }
-}
-
-extension Array {
-    subscript(safe index: Int) -> Element? {
-        return indices.contains(index) ? self[index] : nil
     }
 }
