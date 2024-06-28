@@ -4,7 +4,7 @@ struct TestPageView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading) {
                     // Featured Test
                     Text("Featured")
                         .font(Font.custom("LexendDeca-ExtraBold", size: 20))
@@ -13,7 +13,7 @@ struct TestPageView: View {
                     
                     FeaturedTestView(tests: Test.exampleTests)
                         .padding([.leading, .trailing])
-                        .frame(height: 270)
+                        .frame(height: 225)
                     
                     // Categories
                     ForEach(Category.allCategories, id: \.self) { category in
@@ -25,7 +25,9 @@ struct TestPageView: View {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 15) {
                                     ForEach(category.tests) { test in
-                                        TestCardView(test: test)
+                                        NavigationLink(destination: TestDetailView(test: test)) {
+                                            TestCardView(test: test)
+                                        }
                                     }
                                 }
                                 .padding([.leading, .trailing])
@@ -35,12 +37,6 @@ struct TestPageView: View {
                     }
                 }
                 .padding(.vertical, 20)
-            }
-            .toolbar {
-                ToolbarItem(placement: .automatic) {
-                    Image(systemName: "line.3.horizontal")
-                        .font(.headline)
-                }
             }
         }
     }
