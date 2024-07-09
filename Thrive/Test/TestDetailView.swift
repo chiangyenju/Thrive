@@ -4,12 +4,13 @@ struct TestDetailView: View {
     let test: Test
     @SwiftUI.Environment(\.presentationMode) var presentationMode
     @State private var apiKey: String? // State variable to hold the API key
+    @Binding var isTabBarHidden: Bool // Binding to control tab bar visibility
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    Image(test.bannerImageName)
+                    Image(test.bannerImageName ?? "defaultImage_ft")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(height: 200)
@@ -32,7 +33,7 @@ struct TestDetailView: View {
                         .padding(.bottom, 20)
                         .fixedSize(horizontal: false, vertical: true)
 
-                    NavigationLink(destination: ChatView()) {
+                    NavigationLink(destination: ChatView(test: test, isTabBarHidden: $isTabBarHidden)) {
                         Text("Take Test")
                             .font(Font.custom("LexendDeca-Regular", size: 18))
                             .foregroundColor(.white)
@@ -78,6 +79,6 @@ struct TestDetailView: View {
 
 struct TestDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        TestDetailView(test: Test.example)
+        TestDetailView(test: Test.example, isTabBarHidden: .constant(false))
     }
 }

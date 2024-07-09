@@ -2,11 +2,12 @@ import SwiftUI
 
 struct TestCardView: View {
     let test: Test
+    @Binding var isTabBarHidden: Bool // Binding to control tab bar visibility
 
     var body: some View {
-        NavigationLink(destination: TestDetailView(test: test)) {
+        NavigationLink(destination: TestDetailView(test: test, isTabBarHidden: $isTabBarHidden)) {
             VStack(alignment: .leading, spacing: 4) {
-                Image(test.squareImageName)
+                Image(test.squareImageName ?? "defaultImage_sq")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 150, height: 200)
@@ -35,7 +36,7 @@ struct TestCardView: View {
 
 struct TestCardView_Previews: PreviewProvider {
     static var previews: some View {
-        TestCardView(test: Test.example)
+        TestCardView(test: Test.example, isTabBarHidden: .constant(false))
             .previewLayout(.sizeThatFits)
     }
 }

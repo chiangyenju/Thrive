@@ -1,24 +1,24 @@
 import SwiftUI
 
-struct ResultRowView: View {
-    let result: Result
+struct TestResultRowView: View {
+    let testResult: TestResult
 
     var body: some View {
         HStack(spacing: 15) {
-            Image(result.iconName)
+            Image(testResult.iconName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 60, height: 60)
                 .clipped()
-                .cornerRadius(10) // Optional: Add corner radius if desired
+                .cornerRadius(10)
 
             VStack(alignment: .leading, spacing: 5) {
                 HStack {
-                    Text(result.testName)
+                    Text(testResult.testName)
                         .font(Font.custom("LexendDeca-Regular", size: 16))
                         .fontWeight(.bold)
                     Spacer()
-                    Text(formatDate(result.date))
+                    Text(formatDate(testResult.date))
                         .font(Font.custom("LexendDeca-Regular", size: 14))
                         .foregroundColor(.gray)
                 }
@@ -26,11 +26,11 @@ struct ResultRowView: View {
                 HStack {
                     Image(systemName: "person.fill")
                         .foregroundColor(.gray)
-                    Text(result.userName)
+                    Text(testResult.userName)
                         .font(Font.custom("LexendDeca-Regular", size: 14))
                         .foregroundColor(.gray)
                     Spacer()
-                    Text(result.mainResult)
+                    Text(testResult.mainTestResult)
                         .font(Font.custom("LexendDeca-Regular", size: 14))
                         .foregroundColor(.blue)
                 }
@@ -47,9 +47,9 @@ func formatDate(_ date: Date) -> String {
     return formatter.string(from: date)
 }
 
-struct ResultRowView_Previews: PreviewProvider {
+struct TestResultRowView_Previews: PreviewProvider {
     static var previews: some View {
-        ResultRowView(result: Result.exampleResults[0])
+        TestResultRowView(testResult: TestResult.exampleTestResults[0])
             .previewLayout(.sizeThatFits)
     }
 }

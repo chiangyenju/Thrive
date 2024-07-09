@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     @State var selectedTab: Tabs = .home
-    
+    @State var isTabBarHidden: Bool = false // State to control tab bar visibility
+
     var body: some View {
         VStack {
             Text("Thrive")
@@ -15,9 +15,9 @@ struct ContentView: View {
                 case .home:
                     HomePageView()
                 case .test:
-                    TestPageView()
+                    TestPageView(isTabBarHidden: $isTabBarHidden)
                 case .results:
-                    ResultsPageView()
+                    TestResultPageView()
                 case .discover:
                     DiscoverPageView()
                 case .profile:
@@ -25,9 +25,10 @@ struct ContentView: View {
                 }
             }
             Spacer()
-            TabBarView(selectedTab: $selectedTab)
+            if !isTabBarHidden {
+                TabBarView(selectedTab: $selectedTab)
+            }
         }
-
     }
 }
 
