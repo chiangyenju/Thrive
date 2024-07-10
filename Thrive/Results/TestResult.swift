@@ -2,17 +2,17 @@ import Foundation
 import FirebaseFirestoreSwift
 
 struct TestResult: Identifiable, Codable {
-    @DocumentID var id: String?
+    let id: String
     let testName: String
-    let userName: String
-    let date: Date
-    let mainTestResult: String
     let iconName: String
-}
+    let date: Date
+    let userName: String
+    let mainTestResult: String
 
-extension TestResult {
+    // Sample data for previews
     static let exampleTestResults: [TestResult] = [
-        TestResult(id: UUID().uuidString, testName: "16 Personality", userName: "John Doe", date: Date(), mainTestResult: "INTJ", iconName: "16personality_sq"),
-        // Add more example test results as needed
+        TestResult(id: "1", testName: "MBTI", iconName: "icon1", date: Date(), userName: "User1", mainTestResult: "ENTJ"),
+        // Add more examples as needed
     ]
 }
+

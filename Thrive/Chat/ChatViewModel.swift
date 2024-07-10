@@ -10,11 +10,14 @@ class ChatViewModel: ObservableObject {
     @Published var messages: [ChatMessage] = []
     @Published var currentMessage: String = ""
     @Published var currentTest: Test?
-    
+    @Published var selectedMessages: [ChatMessage] = []
+    @Published var showChatDetail = false
+    @Published var testResults: [TestResult] = []
+
     private var questionIndex = 0
     private var feedbackResponses: [String] = []
     private var db = Firestore.firestore()
-    
+
     func startTest(_ testName: String) {
         switch testName {
         case "16 Personality":
@@ -25,7 +28,8 @@ class ChatViewModel: ObservableObject {
             return
         }
         let greeting = "Welcome to Thrive! Please answer these questions for your \(testName)."
-        messages.append(ChatMessage(id: UUID(), content: greeting, isFromUser: false))
+        let timestamp = Date()
+        messages.append(ChatMessage(id: UUID(), content: greeting, isFromUser: false, timestamp: timestamp))
         sendNextQuestion()
     }
 
@@ -33,7 +37,8 @@ class ChatViewModel: ObservableObject {
         guard let test = currentTest else { return }
         if questionIndex < test.questions.count {
             let question = test.questions[questionIndex]
-            messages.append(ChatMessage(id: UUID(), content: question.question, isFromUser: false))
+            let timestamp = Date()
+            messages.append(ChatMessage(id: UUID(), content: question.question, isFromUser: false, timestamp: timestamp))
         } else {
             analyzeResponses()
         }
@@ -50,7 +55,8 @@ class ChatViewModel: ObservableObject {
         let response = currentMessage
         
         // Append user's message to messages array
-        messages.append(ChatMessage(id: UUID(), content: response, isFromUser: true))
+        let timestamp = Date()
+        messages.append(ChatMessage(id: UUID(), content: response, isFromUser: true, timestamp: timestamp))
         
         let prompt = """
         You are conducting a test named \(currentTest.name). The question is: "\(question)". The user's response is "\(response)". Provide feedback based on this response. Exclude texts where you repeat the question and response. Just simply start providing feedback.
@@ -59,8 +65,16 @@ class ChatViewModel: ObservableObject {
         fetchResponse(for: prompt) { response in
             // Process OpenAI response to ensure it provides appropriate feedback
             let formattedResponse = self.formatResponse(response)
-            self.messages.append(ChatMessage(id: UUID(), content: formattedResponse, isFromUser: false))
+            let timestamp = Date()
+            self.messages.append(ChatMessage(id: UUID(), content: formattedResponse, isFromUser: false, timestamp: timestamp))
             self.feedbackResponses.append(formattedResponse)
+            
+            // Extract result from response
+            if let result = self.extractResult(from: formattedResponse) {
+                self.saveTestResult(mainTestResult: result)
+            } else {
+                print("Failed to extract result from response: \(formattedResponse)")
+            }
 
             self.currentTest?.questions[self.questionIndex].response = self.currentMessage
             self.questionIndex += 1
@@ -82,50 +96,56 @@ class ChatViewModel: ObservableObject {
         """
         
         fetchResponse(for: analysisPrompt) { response in
-            // Process OpenAI response for analysis
             let formattedResponse = self.formatResponse(response)
-            self.messages.append(ChatMessage(id: UUID(), content: formattedResponse, isFromUser: false))
+            let timestamp = Date()
+            self.messages.append(ChatMessage(id: UUID(), content: formattedResponse, isFromUser: false, timestamp: timestamp))
             
+            // Extract result from analysis response
             if let result = self.extractResult(from: formattedResponse) {
                 self.saveTestResult(mainTestResult: result)
+            } else {
+                print("Failed to extract result from analysis response: \(formattedResponse)")
             }
 
             self.currentTest = nil
             self.questionIndex = 0
-            self.feedbackResponses.removeAll() // Clear feedback responses for next test
+            self.feedbackResponses.removeAll()
         }
     }
 
-    private func saveTestResult(mainTestResult: String) {
-        guard let user = Auth.auth().currentUser, let test = currentTest else { return }
+    func saveTestResult(mainTestResult: String) {
+        guard let user = Auth.auth().currentUser else {
+            print("User is not authenticated.")
+            return
+        }
 
+        let db = Firestore.firestore()
         let testResult = TestResult(
             id: UUID().uuidString,
-            testName: test.name,
-            userName: user.displayName ?? "Anonymous",
+            testName: currentTest?.name ?? "Unknown Test",
+            iconName: getIconName(for: currentTest?.name ?? "default"),
             date: Date(),
-            mainTestResult: mainTestResult,
-            iconName: getIconName(for: test.name)
+            userName: user.displayName ?? "Anonymous",
+            mainTestResult: mainTestResult
         )
 
         do {
-            try db.collection("testResults").document(user.uid).collection("results").document(testResult.id!).setData(from: testResult)
+            try db.collection("testResults").document(user.uid).collection("results").document(testResult.id).setData(from: testResult)
 
             for message in messages {
+                var messageWithTimestamp = message
+                messageWithTimestamp.timestamp = Date()
                 do {
-                    try db.collection("testResults").document(user.uid).collection("results").document(testResult.id!).collection("messages").addDocument(from: message)
+                    try db.collection("testResults").document(user.uid).collection("results").document(testResult.id).collection("messages").addDocument(from: messageWithTimestamp)
                 } catch {
                     print("Error saving message: \(error.localizedDescription)")
                 }
             }
-            
-            print("Test result saved successfully.")
         } catch {
             print("Error saving test result: \(error.localizedDescription)")
         }
     }
 
-    
     private func getIconName(for testName: String) -> String {
         switch testName {
         case "16 Personality":

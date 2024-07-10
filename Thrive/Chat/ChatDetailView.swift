@@ -5,7 +5,7 @@ struct ChatDetailView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 10) {
                 ForEach(messages) { message in
                     HStack {
                         if message.isFromUser {
@@ -13,24 +13,32 @@ struct ChatDetailView: View {
                             Text(message.content)
                                 .padding()
                                 .background(Color.blue)
+                                .cornerRadius(8)
                                 .foregroundColor(.white)
-                                .cornerRadius(10)
                         } else {
                             Text(message.content)
                                 .padding()
                                 .background(Color.gray.opacity(0.2))
-                                .cornerRadius(10)
+                                .cornerRadius(8)
                             Spacer()
                         }
                     }
-                    .padding(.horizontal)
-                    .padding(.vertical, 4)
                 }
             }
+            .padding()
         }
-        .navigationTitle("Chat Details")
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitle("Chat Detail", displayMode: .inline)
+        .onAppear {
+            print("Messages count: \(messages.count)")
+        }
     }
 }
 
-
+struct ChatDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        ChatDetailView(messages: [
+            ChatMessage(id: UUID(), content: "Hello, how can I help you?", isFromUser: false, timestamp: Date()),
+            ChatMessage(id: UUID(), content: "I need assistance with my test.", isFromUser: true, timestamp: Date())
+        ])
+    }
+}

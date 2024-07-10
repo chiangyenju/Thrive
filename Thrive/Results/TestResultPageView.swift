@@ -16,11 +16,15 @@ struct TestResultPageView: View {
                     .font(Font.custom("LexendDeca-ExtraBold", size: 24))
                     .padding([.top, .leading], 20)
 
-                List(testResults) { testResult in
-                    TestResultRowView(testResult: testResult)
-                        .onTapGesture {
-                            fetchMessages(for: testResult)
-                        }
+                List {
+                    ForEach(testResults, id: \.id) { testResult in
+                        TestResultRowView(testResult: testResult)
+                            .onTapGesture {
+                                print("Tapped on test result: \(testResult)")
+                                fetchMessages(for: testResult)
+                            }
+                    }
+                    .onDelete(perform: deleteTestResult) // Swipe to delete action
                 }
                 .listStyle(PlainListStyle())
                 .onAppear {
@@ -58,7 +62,11 @@ struct TestResultPageView: View {
 
         let db = Firestore.firestore()
         let resultId = testResult.id ?? ""
-        let messagesCollection = db.collection("testResults").document(user.uid).collection("results").document(resultId).collection("messages")
+        let messagesCollection = db.collection("testResults")
+                                    .document(user.uid)
+                                    .collection("results")
+                                    .document(resultId)
+                                    .collection("messages")
 
         messagesCollection
             .order(by: "timestamp")
@@ -68,9 +76,44 @@ struct TestResultPageView: View {
                     return
                 }
 
-                guard let documents = snapshot?.documents else { return }
+                guard let documents = snapshot?.documents else {
+                    print("No documents found")
+                    return
+                }
+
                 self.selectedMessages = documents.compactMap { try? $0.data(as: ChatMessage.self) }
-                self.showChatDetail = true
+                self.showChatDetail = true // Ensure ChatDetailView is shown when messages are fetched
             }
+    }
+
+    private func deleteTestResult(at offsets: IndexSet) {
+        guard let user = Auth.auth().currentUser else {
+            print("User is not authenticated.")
+            return
+        }
+
+        let db = Firestore.firestore()
+        let batch = db.batch()
+
+        // Delete each selected test result document
+        offsets.forEach { index in
+            let resultToDelete = testResults[index]
+            let resultRef = db.collection("testResults").document(user.uid).collection("results").document(resultToDelete.id)
+
+            batch.deleteDocument(resultRef)
+
+            // Optionally, remove locally
+            testResults.remove(at: index)
+        }
+
+        // Commit the batch delete
+        batch.commit { error in
+            if let error = error {
+                print("Error deleting test result: \(error.localizedDescription)")
+                // Optionally handle the error
+            } else {
+                print("Test result deleted successfully.")
+            }
+        }
     }
 }
