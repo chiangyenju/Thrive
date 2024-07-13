@@ -5,7 +5,7 @@ struct TestResultRowView: View {
 
     var body: some View {
         HStack(spacing: 15) {
-            Image(testResult.iconName)
+            Image(testResult.testIconPic)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 60, height: 60)
@@ -26,7 +26,7 @@ struct TestResultRowView: View {
                 HStack {
                     Image(systemName: "person.fill")
                         .foregroundColor(.gray)
-                    Text(testResult.userName)
+                    Text(testResult.conductedByUsername)
                         .font(Font.custom("LexendDeca-Regular", size: 14))
                         .foregroundColor(.gray)
                     Spacer()
@@ -47,9 +47,9 @@ func formatDate(_ date: Date) -> String {
     return formatter.string(from: date)
 }
 
-struct TestResultRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        TestResultRowView(testResult: TestResult.exampleTestResults[0])
-            .previewLayout(.sizeThatFits)
-    }
-}
+//struct TestResultRowView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TestResultRowView(testResult: TestResult.exampleTestResults[0])
+//            .previewLayout(.sizeThatFits)
+//    }
+//}

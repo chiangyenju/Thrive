@@ -5,9 +5,9 @@ struct SixteenPersonalityTest {
         return [
             Question(question: "I am energized by social interactions."),
             Question(question: "I enjoy spending time alone."),
-            Question(question: "I follow a consistent routine."),
-            Question(question: "I am curious about many things."),
-            Question(question: "I prefer to improvise rather than plan."),
+            Question(question: "I follow a consistent routine and prefer planning ahead."),
+            Question(question: "I follow my intuition instead of sensing."),
+            Question(question: "I follow my logical head rather than my feelings."),
         ].shuffled()
     }
 }

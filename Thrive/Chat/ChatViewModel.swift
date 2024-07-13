@@ -21,9 +21,9 @@ class ChatViewModel: ObservableObject {
     func startTest(_ testName: String) {
         switch testName {
         case "16 Personality":
-            currentTest = Test(name: testName, questions: SixteenPersonalityTest.loadQuestions())
+            currentTest = Test(name: testName, squareImageName: "16personality_sq", questions: SixteenPersonalityTest.loadQuestions())
         case "Big Five":
-            currentTest = Test(name: testName, questions: BigFiveTest.loadQuestions())
+            currentTest = Test(name: testName, squareImageName: "bigfive_sq", questions: BigFiveTest.loadQuestions())
         default:
             return
         }
@@ -47,64 +47,55 @@ class ChatViewModel: ObservableObject {
     func sendMessage() {
         guard let currentTest = currentTest else { return }
         guard questionIndex < currentTest.questions.count else {
-            print("No more questions to answer.")
             return
         }
-        
+
         let question = currentTest.questions[questionIndex].question
         let response = currentMessage
-        
-        // Append user's message to messages array
+
         let timestamp = Date()
         messages.append(ChatMessage(id: UUID(), content: response, isFromUser: true, timestamp: timestamp))
-        
+
         let prompt = """
         You are conducting a test named \(currentTest.name). The question is: "\(question)". The user's response is "\(response)". Provide feedback based on this response. Exclude texts where you repeat the question and response. Just simply start providing feedback.
         """
-        
+
         fetchResponse(for: prompt) { response in
-            // Process OpenAI response to ensure it provides appropriate feedback
             let formattedResponse = self.formatResponse(response)
             let timestamp = Date()
             self.messages.append(ChatMessage(id: UUID(), content: formattedResponse, isFromUser: false, timestamp: timestamp))
             self.feedbackResponses.append(formattedResponse)
-            
-            // Extract result from response
+
             if let result = self.extractResult(from: formattedResponse) {
                 self.saveTestResult(mainTestResult: result)
-            } else {
-                print("Failed to extract result from response: \(formattedResponse)")
             }
 
             self.currentTest?.questions[self.questionIndex].response = self.currentMessage
             self.questionIndex += 1
             self.sendNextQuestion()
         }
-        
+
         currentMessage = ""
     }
 
     private func analyzeResponses() {
         guard let test = currentTest else { return }
-        
+
         let feedbackText = feedbackResponses.joined(separator: "\n")
-        
+
         let analysisPrompt = """
         You are an expert counselor. Analyze the following responses to the \(test.name) test and provide a comprehensive result:
         \(feedbackText). Based on this analysis, what is the specific type or result for the person in \(test.name)?
-        End the analysis with "Your result is: <Type>" Replace <Type> with the specific type.
+        End the analysis in a new line and "Your result is: <Type>" Replace <Type> with the specific type.
         """
-        
+
         fetchResponse(for: analysisPrompt) { response in
             let formattedResponse = self.formatResponse(response)
             let timestamp = Date()
             self.messages.append(ChatMessage(id: UUID(), content: formattedResponse, isFromUser: false, timestamp: timestamp))
-            
-            // Extract result from analysis response
+
             if let result = self.extractResult(from: formattedResponse) {
                 self.saveTestResult(mainTestResult: result)
-            } else {
-                print("Failed to extract result from analysis response: \(formattedResponse)")
             }
 
             self.currentTest = nil
@@ -114,46 +105,44 @@ class ChatViewModel: ObservableObject {
     }
 
     func saveTestResult(mainTestResult: String) {
-        guard let user = Auth.auth().currentUser else {
-            print("User is not authenticated.")
-            return
-        }
+        guard let user = Auth.auth().currentUser else { return }
+        guard let currentTest = self.currentTest else { return }
 
-        let db = Firestore.firestore()
-        let testResult = TestResult(
-            id: UUID().uuidString,
-            testName: currentTest?.name ?? "Unknown Test",
-            iconName: getIconName(for: currentTest?.name ?? "default"),
-            date: Date(),
-            userName: user.displayName ?? "Anonymous",
-            mainTestResult: mainTestResult
-        )
+        let testName = currentTest.name
+        let testIconPic = currentTest.squareImageName
 
-        do {
-            try db.collection("testResults").document(user.uid).collection("results").document(testResult.id).setData(from: testResult)
+        fetchUserDetails(uid: user.uid) { appUser in
+            guard let appUser = appUser else { return }
 
-            for message in messages {
-                var messageWithTimestamp = message
-                messageWithTimestamp.timestamp = Date()
-                do {
-                    try db.collection("testResults").document(user.uid).collection("results").document(testResult.id).collection("messages").addDocument(from: messageWithTimestamp)
-                } catch {
-                    print("Error saving message: \(error.localizedDescription)")
+            let db = Firestore.firestore()
+            let testResult = TestResult(
+                userID: appUser.userID,
+                username: appUser.username,
+                userProfilePicURL: appUser.profilePicURL,
+                testID: UUID().uuidString,
+                testName: testName,
+                testIconPic: testIconPic,
+                date: Date(),
+                conductedByID: appUser.userID,
+                conductedByUsername: appUser.username,
+                conductedByProfilePicURL: appUser.profilePicURL,
+                mainTestResult: mainTestResult
+            )
+
+            do {
+                let userTestResultsRef = db.collection("testResults").document(appUser.userID).collection("results")
+                let testResultRef = userTestResultsRef.document(testResult.testID)
+                try testResultRef.setData(from: testResult)
+
+                for message in self.messages {
+                    var messageWithTimestamp = message
+                    messageWithTimestamp.timestamp = Date()
+                    let messageRef = testResultRef.collection("messages").document()
+                    try messageRef.setData(from: messageWithTimestamp)
                 }
+            } catch {
+                print("Error saving test result: \(error.localizedDescription)")
             }
-        } catch {
-            print("Error saving test result: \(error.localizedDescription)")
-        }
-    }
-
-    private func getIconName(for testName: String) -> String {
-        switch testName {
-        case "16 Personality":
-            return "16personality_sq"
-        case "Big Five":
-            return "bigfive_sq"
-        default:
-            return "default_icon"
         }
     }
 
@@ -182,24 +171,19 @@ class ChatViewModel: ObservableObject {
                        let text = message["content"] as? String {
                         completion(text.trimmingCharacters(in: .whitespacesAndNewlines))
                     } else {
-                        print("Unexpected JSON structure")
                         completion("Sorry, I couldn't process that.")
                     }
-                case .failure(let error):
-                    print("Error fetching response from OpenAI: \(error.localizedDescription)")
+                case .failure:
                     completion("Sorry, there was an error fetching the response.")
                 }
             }
     }
-    
+
     private func formatResponse(_ response: String) -> String {
-        // Customize response formatting as needed
-        // Example: Add contextual understanding or specific responses
-        return response // Adjust as per your specific requirements
+        return response
     }
 
     private func extractResult(from response: String) -> String? {
-        // Extract the specific type or result from the response
         let pattern = "Your result is: (\\w+)"
         if let match = response.range(of: pattern, options: .regularExpression) {
             let result = response[match].replacingOccurrences(of: "Your result is: ", with: "")
@@ -207,5 +191,4 @@ class ChatViewModel: ObservableObject {
         }
         return nil
     }
-
 }

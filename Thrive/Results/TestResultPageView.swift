@@ -17,7 +17,7 @@ struct TestResultPageView: View {
                     .padding([.top, .leading], 20)
 
                 List {
-                    ForEach(testResults, id: \.id) { testResult in
+                    ForEach(testResults, id: \.testID) { testResult in
                         TestResultRowView(testResult: testResult)
                             .onTapGesture {
                                 print("Tapped on test result: \(testResult)")
@@ -61,7 +61,7 @@ struct TestResultPageView: View {
         guard let user = Auth.auth().currentUser else { return }
 
         let db = Firestore.firestore()
-        let resultId = testResult.id ?? ""
+        let resultId = testResult.testID
         let messagesCollection = db.collection("testResults")
                                     .document(user.uid)
                                     .collection("results")
@@ -98,7 +98,7 @@ struct TestResultPageView: View {
         // Delete each selected test result document
         offsets.forEach { index in
             let resultToDelete = testResults[index]
-            let resultRef = db.collection("testResults").document(user.uid).collection("results").document(resultToDelete.id)
+            let resultRef = db.collection("testResults").document(user.uid).collection("results").document(resultToDelete.testID)
 
             batch.deleteDocument(resultRef)
 
