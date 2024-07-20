@@ -101,6 +101,9 @@
 		69E6391C2C2EEDE600657310 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 69E6391B2C2EEDE600657310 /* FirebaseAuth */; };
 		69E6391E2C2EEDE900657310 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 69E6391D2C2EEDE900657310 /* FirebaseAuth */; };
 		69F570DF2C418A4D003DDFDE /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F570DE2C418A4D003DDFDE /* AppUser.swift */; };
+		69F570E12C430C8F003DDFDE /* ConsolidatedReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F570E02C430C8F003DDFDE /* ConsolidatedReport.swift */; };
+		69F570E32C430D01003DDFDE /* ConsolidatedReportRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F570E22C430D01003DDFDE /* ConsolidatedReportRowView.swift */; };
+		69F570E52C430FE6003DDFDE /* CreateConsolidatedReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F570E42C430FE6003DDFDE /* CreateConsolidatedReportView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -174,6 +177,9 @@
 		69E638F52C2E494200657310 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		69E639172C2EED9900657310 /* .env */ = {isa = PBXFileReference; lastKnownFileType = text; path = .env; sourceTree = "<group>"; };
 		69F570DE2C418A4D003DDFDE /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
+		69F570E02C430C8F003DDFDE /* ConsolidatedReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsolidatedReport.swift; sourceTree = "<group>"; };
+		69F570E22C430D01003DDFDE /* ConsolidatedReportRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsolidatedReportRowView.swift; sourceTree = "<group>"; };
+		69F570E42C430FE6003DDFDE /* CreateConsolidatedReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateConsolidatedReportView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -374,6 +380,9 @@
 				69E638C52C2D787700657310 /* TestResult.swift */,
 				69E638C92C2D78DA00657310 /* ResultSample.swift */,
 				69E638CD2C2D7B8A00657310 /* TestResultRowView.swift */,
+				69F570E22C430D01003DDFDE /* ConsolidatedReportRowView.swift */,
+				69F570E02C430C8F003DDFDE /* ConsolidatedReport.swift */,
+				69F570E42C430FE6003DDFDE /* CreateConsolidatedReportView.swift */,
 			);
 			path = Results;
 			sourceTree = "<group>";
@@ -569,7 +578,9 @@
 				69E638B42C2CAD2900657310 /* ChatView.swift in Sources */,
 				69E638C12C2CC9C600657310 /* TestCode.swift in Sources */,
 				69E6388D2C2B274600657310 /* AuthView.swift in Sources */,
+				69F570E32C430D01003DDFDE /* ConsolidatedReportRowView.swift in Sources */,
 				69E637F92C1D793200657310 /* TestPageView.swift in Sources */,
+				69F570E52C430FE6003DDFDE /* CreateConsolidatedReportView.swift in Sources */,
 				69E637F72C1D793200657310 /* ThriveApp.swift in Sources */,
 				698E6D382C307F8700F3F865 /* FirestoreService.swift in Sources */,
 				698E6D412C319E9200F3F865 /* MessageView.swift in Sources */,
@@ -589,6 +600,7 @@
 				698E6D3B2C30A23500F3F865 /* OpenAIService.swift in Sources */,
 				69F570DF2C418A4D003DDFDE /* AppUser.swift in Sources */,
 				69E638222C25336400657310 /* ContentView.swift in Sources */,
+				69F570E12C430C8F003DDFDE /* ConsolidatedReport.swift in Sources */,
 				69E638282C25B0FC00657310 /* DiscoverPageView.swift in Sources */,
 				69E638262C25B0EC00657310 /* HomePageView.swift in Sources */,
 				69E638802C27124100657310 /* FeaturedTestView.swift in Sources */,

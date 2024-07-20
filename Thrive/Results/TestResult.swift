@@ -1,7 +1,7 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-struct TestResult: Identifiable, Codable {
+struct TestResult: Identifiable, Codable, Hashable {
     var id: String { testID }
     let userID: String
     let username: String
