@@ -12,9 +12,20 @@ func fetchUserDetails(uid: String, completion: @escaping (AppUser?) -> Void) {
             let email = data?["email"] as? String ?? ""
             let createdAtTimestamp = data?["createdAt"] as? Timestamp
             let createdAt = createdAtTimestamp?.dateValue() ?? Date()
+            let followersCount = data?["followersCount"] as? Int ?? 0
+            let followingCount = data?["followingCount"] as? Int ?? 0
             
             // Create an AppUser instance
-            let appUser = AppUser(userID: uid, username: username, profilePicURL: profilePicURL, email: email, createdAt: createdAt)
+            let appUser = AppUser(
+                id: document.documentID,
+                userID: uid,
+                username: username,
+                profilePicURL: profilePicURL,
+                email: email,
+                createdAt: createdAt,
+                followersCount: followersCount,
+                followingCount: followingCount
+            )
             completion(appUser)
         } else {
             print("User document does not exist")
