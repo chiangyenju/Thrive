@@ -3,7 +3,7 @@ import FirebaseFirestore
 import FirebaseAuth
 
 class FirestoreService {
-    func saveMessage(testId: String, message: ChatMessage, completion: @escaping (Error?) -> Void) {
+    func saveMessage(testId: String, message: TakeTestMessage, completion: @escaping (Error?) -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         let messageData: [String: Any] = [
             "id": message.id.uuidString,

@@ -6,11 +6,11 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
 
-class ChatViewModel: ObservableObject {
-    @Published var messages: [ChatMessage] = []
+class TakeTestViewModel: ObservableObject {
+    @Published var messages: [TakeTestMessage] = []
     @Published var currentMessage: String = ""
     @Published var currentTest: Test?
-    @Published var selectedMessages: [ChatMessage] = []
+    @Published var selectedMessages: [TakeTestMessage] = []
     @Published var showChatDetail = false
     @Published var testResults: [TestResult] = []
 
@@ -29,7 +29,7 @@ class ChatViewModel: ObservableObject {
         }
         let greeting = "Welcome to Thrive! Please answer these questions for your \(testName)."
         let timestamp = Date()
-        messages.append(ChatMessage(id: UUID(), content: greeting, isFromUser: false, timestamp: timestamp))
+        messages.append(TakeTestMessage(id: UUID(), content: greeting, isFromUser: false, timestamp: timestamp))
         sendNextQuestion()
     }
 
@@ -38,7 +38,7 @@ class ChatViewModel: ObservableObject {
         if questionIndex < test.questions.count {
             let question = test.questions[questionIndex]
             let timestamp = Date()
-            messages.append(ChatMessage(id: UUID(), content: question.question, isFromUser: false, timestamp: timestamp))
+            messages.append(TakeTestMessage(id: UUID(), content: question.question, isFromUser: false, timestamp: timestamp))
         } else {
             analyzeResponses()
         }
@@ -54,7 +54,7 @@ class ChatViewModel: ObservableObject {
         let response = currentMessage
 
         let timestamp = Date()
-        messages.append(ChatMessage(id: UUID(), content: response, isFromUser: true, timestamp: timestamp))
+        messages.append(TakeTestMessage(id: UUID(), content: response, isFromUser: true, timestamp: timestamp))
 
         let prompt = """
         You are conducting a test named \(currentTest.name). The question is: "\(question)". The user's response is "\(response)". Provide feedback based on this response. Exclude texts where you repeat the question and response. Just simply start providing feedback.
@@ -63,7 +63,7 @@ class ChatViewModel: ObservableObject {
         fetchResponse(for: prompt) { response in
             let formattedResponse = self.formatResponse(response)
             let timestamp = Date()
-            self.messages.append(ChatMessage(id: UUID(), content: formattedResponse, isFromUser: false, timestamp: timestamp))
+            self.messages.append(TakeTestMessage(id: UUID(), content: formattedResponse, isFromUser: false, timestamp: timestamp))
             self.feedbackResponses.append(formattedResponse)
 
             if let result = self.extractResult(from: formattedResponse) {
@@ -92,7 +92,7 @@ class ChatViewModel: ObservableObject {
         fetchResponse(for: analysisPrompt) { response in
             let formattedResponse = self.formatResponse(response)
             let timestamp = Date()
-            self.messages.append(ChatMessage(id: UUID(), content: formattedResponse, isFromUser: false, timestamp: timestamp))
+            self.messages.append(TakeTestMessage(id: UUID(), content: formattedResponse, isFromUser: false, timestamp: timestamp))
 
             if let result = self.extractResult(from: formattedResponse) {
                 self.saveTestResult(mainTestResult: result)

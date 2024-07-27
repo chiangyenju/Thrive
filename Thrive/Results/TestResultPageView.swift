@@ -7,7 +7,7 @@ import FirebaseAuth
 struct TestResultPageView: View {
     @State private var testResults: [TestResult] = []
     @State private var consolidatedReports: [ConsolidatedReport] = []
-    @State private var selectedMessages: [ChatMessage] = []
+    @State private var selectedMessages: [TakeTestMessage] = []
     @State private var showChatDetail = false
     @State private var selectedTab = 0
 
@@ -29,7 +29,7 @@ struct TestResultPageView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .background(
-                NavigationLink(destination: ChatDetailView(messages: selectedMessages), isActive: $showChatDetail) {
+                NavigationLink(destination: DoneTestView(messages: selectedMessages), isActive: $showChatDetail) {
                     EmptyView()
                 }
             )
@@ -136,7 +136,7 @@ struct TestResultPageView: View {
                     return
                 }
 
-                self.selectedMessages = documents.compactMap { try? $0.data(as: ChatMessage.self) }
+                self.selectedMessages = documents.compactMap { try? $0.data(as: TakeTestMessage.self) }
                 self.showChatDetail = true // Ensure ChatDetailView is shown when messages are fetched
             }
     }

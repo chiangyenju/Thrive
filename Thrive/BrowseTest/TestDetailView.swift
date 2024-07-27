@@ -33,7 +33,7 @@ struct TestDetailView: View {
                         .padding(.bottom, 20)
                         .fixedSize(horizontal: false, vertical: true)
 
-                    NavigationLink(destination: ChatView(test: test, isTabBarHidden: $isTabBarHidden)) {
+                    NavigationLink(destination: TakeTestView(test: test, isTabBarHidden: $isTabBarHidden)) {
                         Text("Take Test")
                             .font(Font.custom("LexendDeca-Regular", size: 18))
                             .foregroundColor(.white)

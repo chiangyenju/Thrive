@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct MessageView: View {
-    let message: ChatMessage
+struct TakeTestMessageView: View {
+    let message: TakeTestMessage
     
     var body: some View {
         HStack {

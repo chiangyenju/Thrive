@@ -1,9 +1,9 @@
 import SwiftUI
 import Combine // Import Combine framework
 
-struct ChatView: View {
+struct TakeTestView: View {
     @SwiftUI.Environment(\.presentationMode) var presentationMode
-    @StateObject private var viewModel = ChatViewModel()
+    @StateObject private var viewModel = TakeTestViewModel()
     let test: Test // Injected test object from TestDetailView
     @Binding var isTabBarHidden: Bool // Binding to control tab bar visibility
     
@@ -13,7 +13,7 @@ struct ChatView: View {
                 ScrollView {
                     VStack(alignment: .leading) {
                         ForEach(viewModel.messages, id: \.id) { message in
-                            MessageView(message: message)
+                            TakeTestMessageView(message: message)
                         }
                     }
                 }
@@ -67,8 +67,8 @@ struct ChatView: View {
     }
 }
 
-struct ChatView_Previews: PreviewProvider {
+struct TakeTestView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatView(test: Test.example, isTabBarHidden: .constant(false))
+        TakeTestView(test: Test.example, isTabBarHidden: .constant(false))
     }
 }

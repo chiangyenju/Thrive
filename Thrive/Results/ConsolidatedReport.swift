@@ -6,5 +6,5 @@ struct ConsolidatedReport: Identifiable, Codable {
     var reportID: String
     var date: Date
     var content: String
-    var messages: [ChatMessage]
+    var messages: [TakeTestMessage]
 }

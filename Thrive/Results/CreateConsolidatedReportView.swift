@@ -96,7 +96,7 @@ struct CreateConsolidatedReportView: View {
 
         let dispatchGroup = DispatchGroup()
 
-        var allMessages: [ChatMessage] = []
+        var allMessages: [TakeTestMessage] = []
 
         for testResult in selectedTestResults {
             dispatchGroup.enter()
@@ -112,7 +112,7 @@ struct CreateConsolidatedReportView: View {
         }
     }
 
-    private func fetchMessages(for testResult: TestResult, completion: @escaping ([ChatMessage]) -> Void) {
+    private func fetchMessages(for testResult: TestResult, completion: @escaping ([TakeTestMessage]) -> Void) {
         guard let user = Auth.auth().currentUser else { return }
 
         let db = Firestore.firestore()
@@ -137,12 +137,12 @@ struct CreateConsolidatedReportView: View {
                     return
                 }
 
-                let messages = documents.compactMap { try? $0.data(as: ChatMessage.self) }
+                let messages = documents.compactMap { try? $0.data(as: TakeTestMessage.self) }
                 completion(messages)
             }
     }
 
-    private func createConsolidatedReport(with messages: [ChatMessage]) {
+    private func createConsolidatedReport(with messages: [TakeTestMessage]) {
         // Call OpenAI API to generate consolidated report
         // Save the report to Firestore
         guard let user = Auth.auth().currentUser else { return }
