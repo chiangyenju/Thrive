@@ -3,7 +3,7 @@ import Firebase
 import FirebaseStorage
 import Combine
 
-class ProfileViewModel: ObservableObject {
+class UserProfileViewModel: ObservableObject {
     @Published var profileImage: Image? = Image(systemName: "person.crop.circle.fill")
     @Published var username: String = ""
     @Published var email: String = ""

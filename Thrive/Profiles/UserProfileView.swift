@@ -1,30 +1,32 @@
 import SwiftUI
 import Firebase
 
-struct ProfilePageView: View {
-    @StateObject private var viewModel = ProfileViewModel()
+struct UserProfileView: View {
+    @StateObject private var viewModel = UserProfileViewModel()
     
     var body: some View {
         NavigationView {
             VStack {
                 ProfileImageView(image: $viewModel.profileImage, imagePickerPresented: $viewModel.imagePickerPresented, onImageSelected: viewModel.uploadProfileImage)
+                    .padding(.top, 20)
                 
                 Text(viewModel.username)
                     .font(.title)
                     .bold()
-                    .padding(.bottom, 10)
+                    .padding(.top, 10)
                 
                 Text(viewModel.email)
                     .font(.subheadline)
-                    .padding(.bottom, 10)
+                    .padding(.top, 5)
                 
                 Text("Joined on \(viewModel.createdAt)")
                     .font(.subheadline)
-                    .padding(.bottom, 10)
+                    .padding(.top, 5)
                 
                 TextField("Enter new username", text: $viewModel.newUsername)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.top, 10)
                 
                 Button(action: {
                     viewModel.updateUsername()
@@ -33,35 +35,40 @@ struct ProfilePageView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .padding()
+                        .frame(maxWidth: .infinity)
                         .background(Color.blue)
                         .cornerRadius(10)
                 }
-                .padding()
+                .padding(.horizontal)
+                .padding(.top, 10)
                 .alert(isPresented: $viewModel.showAlert) {
                     Alert(title: Text("Update Status"), message: Text(viewModel.alertMessage), dismissButton: .default(Text("OK")))
                 }
                 
                 HStack {
-                    VStack {
-                        Text("Followers")
-                        Text("\(viewModel.followersCount)")
-                            .font(.title2)
-                            .onTapGesture {
-                                // Navigate to Followers list
-                            }
+                    NavigationLink(destination: FollowersListView()) {
+                        VStack {
+                            Text("Followers")
+                            Text("\(viewModel.followersCount)")
+                                .font(.title2)
+                        }
+                        .padding()
+                        .background(Color(UIColor.systemGray6))
+                        .cornerRadius(10)
                     }
-                    .padding()
                     
-                    VStack {
-                        Text("Following")
-                        Text("\(viewModel.followingCount)")
-                            .font(.title2)
-                            .onTapGesture {
-                                // Navigate to Following list
-                            }
+                    NavigationLink(destination: FollowingListView()) {
+                        VStack {
+                            Text("Following")
+                            Text("\(viewModel.followingCount)")
+                                .font(.title2)
+                        }
+                        .padding()
+                        .background(Color(UIColor.systemGray6))
+                        .cornerRadius(10)
                     }
-                    .padding()
                 }
+                .padding(.top, 20)
                 
                 Spacer()
             }
@@ -75,3 +82,20 @@ struct ProfilePageView: View {
         }
     }
 }
+// Placeholder views for followers and following lists
+struct FollowingListView: View {
+    var body: some View {
+        Text("Followers List")
+            .navigationTitle("Followers")
+    }
+}
+
+// Placeholder views for followers and following lists
+struct FollowersListView: View {
+    var body: some View {
+        Text("Followers List")
+            .navigationTitle("Followers")
+    }
+}
+
+

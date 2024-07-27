@@ -21,7 +21,7 @@ struct ContentView: View {
                 case .discover:
                     DiscoverPageView()
                 case .profile:
-                    ProfilePageView()
+                    UserProfileView()
                 }
             }
             Spacer()
