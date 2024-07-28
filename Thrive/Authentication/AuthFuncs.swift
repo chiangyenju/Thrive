@@ -14,6 +14,8 @@ func fetchUserDetails(uid: String, completion: @escaping (AppUser?) -> Void) {
             let createdAt = createdAtTimestamp?.dateValue() ?? Date()
             let followersCount = data?["followersCount"] as? Int ?? 0
             let followingCount = data?["followingCount"] as? Int ?? 0
+            let followers = data?["followers"] as? [String] ?? []
+            let following = data?["following"] as? [String] ?? []
             
             // Create an AppUser instance
             let appUser = AppUser(
@@ -24,7 +26,9 @@ func fetchUserDetails(uid: String, completion: @escaping (AppUser?) -> Void) {
                 email: email,
                 createdAt: createdAt,
                 followersCount: followersCount,
-                followingCount: followingCount
+                followingCount: followingCount,
+                followers: followers,
+                following: following
             )
             completion(appUser)
         } else {
