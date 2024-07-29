@@ -68,6 +68,7 @@ struct UserProfileView: View {
                         .cornerRadius(10)
                     }
                 }
+
                 .padding(.top, 20)
                 
                 Spacer()
@@ -83,12 +84,12 @@ struct UserProfileView: View {
     }
 }
 // Placeholder views for followers and following lists
-struct FollowingListView: View {
-    var body: some View {
-        Text("Followers List")
-            .navigationTitle("Followers")
-    }
-}
+//struct FollowingListView: View {
+//    var body: some View {
+//        Text("Followings List")
+//            .navigationTitle("Followings")
+//    }
+//}
 
 // Placeholder views for followers and following lists
 struct FollowersListView: View {

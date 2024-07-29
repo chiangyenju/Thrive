@@ -1,65 +1,104 @@
-import Foundation
-import FirebaseFirestore
-import FirebaseAuth
+import SwiftUI
+import Firebase
 import Combine
 
 class FollowingListViewModel: ObservableObject {
+    @Published var searchText: String = ""
+    @Published var followingUsers: [AppUser] = []
     @Published var filteredUsers: [AppUser] = []
-    private var allUsers: [AppUser] = []
+    
     private var db = Firestore.firestore()
-    private var cancellables: Set<AnyCancellable> = []
-
-    func fetchFollowingUsers() {
-        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
-
-        db.collection("users").document(currentUserID).getDocument { [weak self] document, error in
-            if let error = error {
-                print("Error fetching following users: \(error.localizedDescription)")
-                return
-            }
-            guard let data = document?.data(), let following = data["following"] as? [String] else { return }
-
-            self?.fetchUsers(userIDs: following)
-        }
+    private var cancellables = Set<AnyCancellable>()
+    private var currentUserID: String? {
+        Auth.auth().currentUser?.uid
     }
-
-    private func fetchUsers(userIDs: [String]) {
-        let userRefs = userIDs.map { db.collection("users").document($0) }
-
-        Publishers.MergeMany(userRefs.map { $0.getDocumentPublisher() })
-            .collect()
-            .sink { completion in
-                if case let .failure(error) = completion {
-                    print("Error fetching users: \(error.localizedDescription)")
-                }
-            } receiveValue: { [weak self] documents in
-                self?.allUsers = documents.compactMap { document in
-                    try? document.data(as: AppUser.self)
-                }
-                self?.filteredUsers = self?.allUsers ?? []
+    
+    init() {
+        self.$searchText
+            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
+            .sink { [weak self] searchText in
+                self?.fetchUsers(matching: searchText)
             }
             .store(in: &cancellables)
     }
-
-    func searchUsers(by text: String) {
-        if text.isEmpty {
-            filteredUsers = allUsers
-        } else {
-            filteredUsers = allUsers.filter { $0.username.lowercased().contains(text.lowercased()) }
+    
+    func fetchUsers(matching searchText: String) {
+        guard !searchText.isEmpty else {
+            self.filteredUsers = []
+            return
         }
-    }
-}
-
-extension DocumentReference {
-    func getDocumentPublisher() -> AnyPublisher<DocumentSnapshot, Error> {
-        Future<DocumentSnapshot, Error> { promise in
-            self.getDocument { document, error in
-                if let document = document {
-                    promise(.success(document))
-                } else if let error = error {
-                    promise(.failure(error))
+        
+        db.collection("users")
+            .whereField("username", isGreaterThanOrEqualTo: searchText)
+            .whereField("username", isLessThanOrEqualTo: searchText + "\u{f8ff}")
+            .getDocuments { [weak self] (querySnapshot, error) in
+                guard let self = self else { return }
+                
+                if let error = error {
+                    print("Error fetching users: \(error.localizedDescription)")
+                    return
+                }
+                
+                if let querySnapshot = querySnapshot {
+                    self.filteredUsers = querySnapshot.documents.compactMap { document -> AppUser? in
+                        let data = document.data()
+                        let id = document.documentID
+                        let userID = data["userID"] as? String ?? ""
+                        let username = data["username"] as? String ?? "Anonymous"
+                        let profilePicURL = data["profilePicURL"] as? String ?? ""
+                        let email = data["email"] as? String ?? ""
+                        let createdAtTimestamp = data["createdAt"] as? Timestamp
+                        let createdAt = createdAtTimestamp?.dateValue() ?? Date()
+                        let followersCount = data["followersCount"] as? Int ?? 0
+                        let followingCount = data["followingCount"] as? Int ?? 0
+                        let followers = data["followers"] as? [String] ?? []
+                        let following = data["following"] as? [String] ?? []
+                        
+                        return AppUser(id: id, userID: userID, username: username, profilePicURL: profilePicURL, email: email, createdAt: createdAt, followersCount: followersCount, followingCount: followingCount, followers: followers, following: following)
+                    }
                 }
             }
-        }.eraseToAnyPublisher()
+    }
+    
+    func toggleFollow(user: AppUser) {
+        guard let currentUserID = currentUserID else { return }
+        
+        let userDoc = db.collection("users").document(user.id ?? "")
+        let currentUserDoc = db.collection("users").document(currentUserID)
+        
+        if user.followers.contains(currentUserID) {
+            // Unfollow
+            userDoc.updateData([
+                "followers": FieldValue.arrayRemove([currentUserID]),
+                "followersCount": FieldValue.increment(Int64(-1))
+            ])
+            currentUserDoc.updateData([
+                "following": FieldValue.arrayRemove([user.userID]),
+                "followingCount": FieldValue.increment(Int64(-1))
+            ])
+        } else {
+            // Follow
+            userDoc.updateData([
+                "followers": FieldValue.arrayUnion([currentUserID]),
+                "followersCount": FieldValue.increment(Int64(1))
+            ])
+            currentUserDoc.updateData([
+                "following": FieldValue.arrayUnion([user.userID]),
+                "followingCount": FieldValue.increment(Int64(1))
+            ])
+        }
+        
+        // Update local data
+        if let index = self.filteredUsers.firstIndex(where: { $0.id == user.id }) {
+            var updatedUser = self.filteredUsers[index]
+            if updatedUser.followers.contains(currentUserID) {
+                updatedUser.followers.removeAll { $0 == currentUserID }
+                updatedUser.followersCount -= 1
+            } else {
+                updatedUser.followers.append(currentUserID)
+                updatedUser.followersCount += 1
+            }
+            self.filteredUsers[index] = updatedUser
+        }
     }
 }

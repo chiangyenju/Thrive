@@ -19,7 +19,10 @@ class UserProfileViewModel: ObservableObject {
     private var db = Firestore.firestore()
     
     func fetchUserProfile() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("User not authenticated")
+            return
+        }
         
         db.collection("users").document(uid).getDocument { [weak self] (document, error) in
             guard let self = self else { return }
