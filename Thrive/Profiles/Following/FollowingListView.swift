@@ -32,7 +32,19 @@ struct FollowingListView: View {
                     VStack(alignment: .leading) {
                         Text(user.username)
                             .font(.headline)
-
+                    }
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        viewModel.toggleFollow(user: user)
+                    }) {
+                        Text(user.followers.contains(viewModel.currentUserID ?? "") ? "Unfollow" : "Follow")
+                            .foregroundColor(.white)
+                            .padding(.vertical, 5)
+                            .padding(.horizontal, 10)
+                            .background(user.followers.contains(viewModel.currentUserID ?? "") ? Color.red : Color.blue)
+                            .cornerRadius(5)
                     }
                 }
             }

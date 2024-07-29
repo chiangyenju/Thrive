@@ -19,7 +19,7 @@ func fetchUserDetails(uid: String, completion: @escaping (AppUser?) -> Void) {
             
             // Create an AppUser instance
             let appUser = AppUser(
-                id: document.documentID,
+//                id: document.documentID,
                 userID: uid,
                 username: username,
                 profilePicURL: profilePicURL,

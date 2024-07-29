@@ -83,13 +83,8 @@ struct UserProfileView: View {
         }
     }
 }
-// Placeholder views for followers and following lists
-//struct FollowingListView: View {
-//    var body: some View {
-//        Text("Followings List")
-//            .navigationTitle("Followings")
-//    }
-//}
+
+
 
 // Placeholder views for followers and following lists
 struct FollowersListView: View {

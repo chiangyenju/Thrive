@@ -9,7 +9,7 @@ class FollowingListViewModel: ObservableObject {
     
     private var db = Firestore.firestore()
     private var cancellables = Set<AnyCancellable>()
-    private var currentUserID: String? {
+    var currentUserID: String? {
         Auth.auth().currentUser?.uid
     }
     
@@ -61,44 +61,86 @@ class FollowingListViewModel: ObservableObject {
     }
     
     func toggleFollow(user: AppUser) {
-        guard let currentUserID = currentUserID else { return }
-        
-        let userDoc = db.collection("users").document(user.id ?? "")
+        guard let currentUserID = currentUserID, let userID = user.id else { return }
+
+        let userDoc = db.collection("users").document(userID)
         let currentUserDoc = db.collection("users").document(currentUserID)
         
-        if user.followers.contains(currentUserID) {
-            // Unfollow
-            userDoc.updateData([
-                "followers": FieldValue.arrayRemove([currentUserID]),
-                "followersCount": FieldValue.increment(Int64(-1))
-            ])
-            currentUserDoc.updateData([
-                "following": FieldValue.arrayRemove([user.userID]),
-                "followingCount": FieldValue.increment(Int64(-1))
-            ])
-        } else {
-            // Follow
-            userDoc.updateData([
-                "followers": FieldValue.arrayUnion([currentUserID]),
-                "followersCount": FieldValue.increment(Int64(1))
-            ])
-            currentUserDoc.updateData([
-                "following": FieldValue.arrayUnion([user.userID]),
-                "followingCount": FieldValue.increment(Int64(1))
-            ])
-        }
-        
-        // Update local data
-        if let index = self.filteredUsers.firstIndex(where: { $0.id == user.id }) {
-            var updatedUser = self.filteredUsers[index]
-            if updatedUser.followers.contains(currentUserID) {
-                updatedUser.followers.removeAll { $0 == currentUserID }
-                updatedUser.followersCount -= 1
-            } else {
-                updatedUser.followers.append(currentUserID)
-                updatedUser.followersCount += 1
+        userDoc.getDocument { [weak self] (document, error) in
+            guard let self = self, let document = document, document.exists else {
+                print("Error fetching user document: \(error?.localizedDescription ?? "Unknown error")")
+                return
             }
-            self.filteredUsers[index] = updatedUser
+
+            var followers = document.data()?["followers"] as? [String] ?? []
+            var followersCount = document.data()?["followersCount"] as? Int ?? 0
+
+            let isFollowing = followers.contains(currentUserID)
+
+            if isFollowing {
+                // Unfollow
+                followers.removeAll { $0 == currentUserID }
+                followersCount -= 1
+
+                userDoc.updateData([
+                    "followers": followers,
+                    "followersCount": followersCount
+                ]) { error in
+                    if let error = error {
+                        print("Error updating user document: \(error.localizedDescription)")
+                        return
+                    }
+                    currentUserDoc.updateData([
+                        "following": FieldValue.arrayRemove([userID]),
+                        "followingCount": FieldValue.increment(Int64(-1))
+                    ]) { error in
+                        if let error = error {
+                            print("Error updating current user document: \(error.localizedDescription)")
+                        } else {
+                            DispatchQueue.main.async {
+                                if let index = self.filteredUsers.firstIndex(where: { $0.id == userID }) {
+                                    var updatedUser = self.filteredUsers[index]
+                                    updatedUser.followers.removeAll { $0 == currentUserID }
+                                    updatedUser.followersCount -= 1
+                                    self.filteredUsers[index] = updatedUser
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Follow
+                followers.append(currentUserID)
+                followersCount += 1
+
+                userDoc.updateData([
+                    "followers": followers,
+                    "followersCount": followersCount
+                ]) { error in
+                    if let error = error {
+                        print("Error updating user document: \(error.localizedDescription)")
+                        return
+                    }
+                    currentUserDoc.updateData([
+                        "following": FieldValue.arrayUnion([userID]),
+                        "followingCount": FieldValue.increment(Int64(1))
+                    ]) { error in
+                        if let error = error {
+                            print("Error updating current user document: \(error.localizedDescription)")
+                        } else {
+                            DispatchQueue.main.async {
+                                if let index = self.filteredUsers.firstIndex(where: { $0.id == userID }) {
+                                    var updatedUser = self.filteredUsers[index]
+                                    updatedUser.followers.append(currentUserID)
+                                    updatedUser.followersCount += 1
+                                    self.filteredUsers[index] = updatedUser
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
+
 }
