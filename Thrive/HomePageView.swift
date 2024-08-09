@@ -21,14 +21,15 @@ struct HomePageView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .automatic) {
-                    Image(systemName: "line.3.horizontal")
-                        .font(.headline)
+                    NavigationLink(destination: ChatListView().environmentObject(ChatViewModel())) {
+                        Image(systemName: "message.fill")
+                            .font(.headline)
+                    }
                 }
             }
         }
     }
 }
-
 
 struct HomePageView_Previews: PreviewProvider {
     static var previews: some View {

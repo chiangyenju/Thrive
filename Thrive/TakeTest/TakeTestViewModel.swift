@@ -14,6 +14,8 @@ class TakeTestViewModel: ObservableObject {
     @Published var showChatDetail = false
     @Published var testResults: [TestResult] = []
 
+    private var authService = AuthService()
+
     private var questionIndex = 0
     private var feedbackResponses: [String] = []
     private var db = Firestore.firestore()
@@ -111,7 +113,7 @@ class TakeTestViewModel: ObservableObject {
         let testName = currentTest.name
         let testIconPic = currentTest.squareImageName
 
-        fetchUserDetails(uid: user.uid) { appUser in
+        authService.fetchUserDetails(uid: user.uid) { appUser in
             guard let appUser = appUser else { return }
 
             let db = Firestore.firestore()
